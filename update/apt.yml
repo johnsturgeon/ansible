@@ -41,4 +41,6 @@
     ansible.builtin.uri:
       url: "http://uptimekuma.lan:3001/api/push/xcIrKXVHvj?status=up&msg=OK&ping="
       method: GET
+    run_once: true
+    delegate_to: localhost
     when: all_tasks_successful
