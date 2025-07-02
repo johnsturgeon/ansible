@@ -1,6 +1,6 @@
 plugin: netbox.netbox.nb_inventory
 api_endpoint: https://netbox.lan
-token: {token}
+token: "{{ lookup('env','NETBOX_TOKEN') }}"
 validate_certs: False
 
 use_devices: true
