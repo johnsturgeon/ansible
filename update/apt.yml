@@ -1,0 +1,28 @@
+- name: Update all Debian packages to their latest version
+  hosts: tags_ansible_debian
+  tasks:
+  - name: hack to resolve Problem with MergeList Issue
+    shell: 'find /var/lib/apt/lists -maxdepth 1 -type f -exec rm -v {} \;'
+    when:
+      - ansible_host == 'tgfp-prod'
+
+  - name: install all updates
+    ansible.builtin.apt:
+      upgrade: dist
+      update_cache: yes
+      cache_valid_time: 3600
+      autoremove: yes
+      autoclean: yes
+      state: latest
+
+  - name: Restart cloudflared if this host is cloudflare and updates changed
+    ansible.builtin.systemd:
+      name: cloudflared
+      state: restarted
+    when:
+      - result.changed
+      - ansible_host == 'cloudflared'
+
+  - name: Run the equivalent of "apt-get clean" as a separate step
+    ansible.builtin.apt:
+      clean: yes
