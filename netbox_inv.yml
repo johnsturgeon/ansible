@@ -1,0 +1,21 @@
+plugin: netbox.netbox.nb_inventory
+api_endpoint: https://netbox.lan
+token: {token}
+validate_certs: False
+
+use_devices: true
+use_virtual_machines: true
+
+query_filters:
+  - cf_ansible_managed: true
+  - has_primary_ip: true
+  - status: active
+
+group_by:
+  - tags
+
+compose:
+  ansible_host: "{{ primary_ip4.address | regex_replace('/.*$', '') }}"
+  inventory_hostname: name
+  netbox_tags: tags
+  netbox_serial: serial
