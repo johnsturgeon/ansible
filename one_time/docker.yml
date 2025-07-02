@@ -1,1 +1,7 @@
+- name: Update all Docker Compose Stacks
+  hosts: tags_ansible_docker
+  tasks:
 
+  - name: Install / Update Periphery
+    ansible.builtin.shell: |
+      curl -sSL https://raw.githubusercontent.com/moghtech/komodo/main/scripts/setup-periphery.py | python3
