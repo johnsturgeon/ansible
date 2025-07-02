@@ -33,7 +33,7 @@
     ansible.builtin.set_fact:
       all_tasks_successful: >-
         {{
-          apg_result is success and
+          apt_result is success and
           clean_result is success
         }}
 
