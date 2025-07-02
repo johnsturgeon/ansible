@@ -27,15 +27,6 @@
   - name: Run the equivalent of "apt-get clean" as a separate step
     ansible.builtin.apt:
       clean: yes
-    register: clean_result
-
-  - name: Check if all tasks were successful
-    ansible.builtin.set_fact:
-      all_tasks_successful: >-
-        {{
-          apt_result is success and
-          clean_result is success
-        }}
 
   - name: Ping healthchecks.io if all tasks were successful
     ansible.builtin.uri:
@@ -43,4 +34,4 @@
       method: GET
     run_once: true
     delegate_to: localhost
-    when: all_tasks_successful
+  
