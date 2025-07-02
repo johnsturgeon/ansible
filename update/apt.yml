@@ -14,16 +14,31 @@
       autoremove: yes
       autoclean: yes
       state: latest
-    register: result
+    register: apt_result
 
   - name: Restart cloudflared if this host is cloudflare and updates changed
     ansible.builtin.systemd:
       name: cloudflared
       state: restarted
     when:
-      - result.changed
+      - apt_result.changed
       - ansible_host == 'cloudflared'
 
   - name: Run the equivalent of "apt-get clean" as a separate step
     ansible.builtin.apt:
       clean: yes
+    register: clean_result
+
+  - name: Check if all tasks were successful
+    ansible.builtin.set_fact:
+      all_tasks_successful: >-
+        {{
+          apg_result is success and
+          clean_result is success
+        }}
+
+    - name: Ping healthchecks.io if all tasks were successful
+      ansible.builtin.uri:
+        url: "https://uptimekuma.lan:3001/api/push/xcIrKXVHvj?status=up&msg=OK&ping="
+        method: GET
+      when: all_tasks_successful
