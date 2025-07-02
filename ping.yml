@@ -1,2 +1,5 @@
-- name: Example from an Ansible Playbook
-  ansible.builtin.ping:
+- name: Ping all Docker Compose Hosts
+  hosts: tags_ansible_docker
+  tasks:
+  - name: ping hosts
+    ansible.builtin.ping:
