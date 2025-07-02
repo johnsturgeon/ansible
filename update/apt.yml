@@ -39,6 +39,6 @@
 
   - name: Ping healthchecks.io if all tasks were successful
     ansible.builtin.uri:
-      url: "https://uptimekuma.lan:3001/api/push/xcIrKXVHvj?status=up&msg=OK&ping="
+      url: "http://uptimekuma.lan:3001/api/push/xcIrKXVHvj?status=up&msg=OK&ping="
       method: GET
     when: all_tasks_successful
