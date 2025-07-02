@@ -2,4 +2,4 @@
   hosts: tags_ansible_docker
   tasks:
   - name: ping hosts
-    ansible.builtin.pin:
+    ansible.builtin.ping:
