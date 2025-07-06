@@ -1,4 +1,4 @@
-v- name: Debian Server Configuration
+- name: Debian Server Configuration
   hosts: tags_ansible_debian
   vars:
     netbird_setup_key: "{{ lookup('env', 'NETBIRD_SETUP_KEY') }}"
