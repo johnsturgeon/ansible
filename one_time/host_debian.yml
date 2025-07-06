@@ -3,8 +3,6 @@
   vars:
     netbird_setup_key: "{{ lookup('env', 'NETBIRD_SETUP_KEY') }}"
     base_path: /root/ansible
-  roles:
-    - { role: zorlin.netbird }
 
   tasks:
   - name: Install iTerm Shell Integration
@@ -12,6 +10,20 @@
     args:
       creates: "{{ ansible_env.HOME }}/.iterm2_shell_integration.bash"
 
+  # Install Netbird
+  - name: Check to see if /usr/bin/netbird exists
+    ansible.builtin.stat:
+      path: /usr/bin/netbird
+    register: netbird
+  - name: Install Netbird when it doesn't already exists
+    ansible.builtin.shell: |
+      curl -fsSL https://pkgs.netbird.io/install.sh | sh
+    when: netbird.stat.executable is not defined
+  - name: Netbird UP
+    ansible.builtin.shell: |
+      netbird up --setup-key DC3BEF3B-EF1B-4263-99BA-B7543BAB0A58
+    when: netbird.stat.executable is not defined
+   
   - name: Update some basic .profile settings
     ansible.builtin.blockinfile:
       path: "{{ ansible_env.HOME }}/.bashrc"
