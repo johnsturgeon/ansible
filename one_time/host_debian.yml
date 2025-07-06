@@ -1,4 +1,4 @@
-- name: Debian Server Configuration
+v- name: Debian Server Configuration
   hosts: tags_ansible_debian
   vars:
     netbird_setup_key: "{{ lookup('env', 'NETBIRD_SETUP_KEY') }}"
@@ -22,7 +22,7 @@
   - name: Add johnsturgeon imac public ssh key
     ansible.posix.authorized_key:
       user: root
-      key: "{{ lookup('file', base_path + '/files/john-imac-key.pub') }}"
+      key: "{{ lookup('env', 'JOHNS_IMAC_PUBLIC_KEY') }}"
       
   - name: Check for netbird setup key
     ansible.builtin.fail:
