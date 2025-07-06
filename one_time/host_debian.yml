@@ -2,8 +2,9 @@
   hosts: tags_ansible_debian
   vars:
     netbird_setup_key: "{{ lookup('env', 'NETBIRD_SETUP_KEY') }}"
-    netbird_register: true
     base_path: /root/ansible
+  roles:
+    - { role: zorlin.netbird }
 
   tasks:
   - name: Install iTerm Shell Integration
@@ -24,15 +25,3 @@
       user: root
       key: "{{ lookup('env', 'JOHNS_IMAC_PUBLIC_KEY') }}"
       
-  - name: Check for netbird setup key
-    ansible.builtin.fail:
-      msg: "netbird_setup_key is required"
-    when: netbird_setup_key is not defined
-
-  - name: Install Netbird
-    ansible.builtin.include_role:
-      name: netbird
-
-  - name: Check Netbird Status
-    ansible.builtin.shell: |
-      netbird status --detail
