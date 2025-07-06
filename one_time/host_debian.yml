@@ -21,7 +21,7 @@
     when: netbird.stat.executable is not defined
   - name: Netbird UP
     ansible.builtin.shell: "netbird up --setup-key {{ netbird_setup_key }}"
-    when: netbird.stat.executable is defined
+    when: netbird.stat.executable is not defined
    
   - name: Update some basic .profile settings
     ansible.builtin.blockinfile:
