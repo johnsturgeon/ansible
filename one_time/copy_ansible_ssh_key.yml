@@ -1,0 +1,7 @@
+- name: Add ansible-root ssh public key to host
+  hosts: all
+  tasks:
+  - name: Add ansible-root ssh key
+    ansible.posix.authorized_key:
+      user: root
+      key: "{{ lookup('env', 'ANSIBLE_PUBLIC_KEY') }}"
