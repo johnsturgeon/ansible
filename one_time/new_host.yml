@@ -1,2 +1,2 @@
-- import_playbook: playbook_one.yml
-- import_playbook: playbook_two.yml
+- import_playbook: copy_ansible_ssh_key.yml
+- import_playbook: host_debian.yml
