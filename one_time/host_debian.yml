@@ -35,4 +35,12 @@
     ansible.posix.authorized_key:
       user: root
       key: "{{ lookup('env', 'JOHNS_IMAC_PUBLIC_KEY') }}"
-      
+
+  - name: Install useful things
+    ansible.builtin.apt:
+      name:
+        - glances
+        - vim
+        - jq
+      state: latest
+      update_cache: yes
