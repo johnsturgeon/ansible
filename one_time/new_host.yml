@@ -1,3 +1,2 @@
-# playbooks/meta.yml
 - import_playbook: playbook_one.yml
 - import_playbook: playbook_two.yml
