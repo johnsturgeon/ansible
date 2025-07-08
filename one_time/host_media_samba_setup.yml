@@ -1,0 +1,30 @@
+- name: Set up host for mounting the /media folder
+  hosts: tags_ansible_smb_media
+  vars:
+    base_path: /root/ansible
+
+  tasks:
+  - name: Create a user 'johnturgeon' with a home directory
+    ansible.builtin.user:
+      name: johnsturgeon
+      create_home: yes
+
+  - name: Copy smbcredentials file
+    ansible.builtin.copy:
+      src: "{{ base_path }}/files/smb_media_hosts/.smbcredentials"
+      dest: "/home/johnsturgeon/.smbcredentials"
+      owner: johnsturgeon
+      group: johnsturgeon
+
+  - name: Install cifs
+    ansible.builtin.apt:
+      name: cifs-utils
+      state: present
+
+  - name: Mount truenas
+    ansible.posix.mount:
+      src: //truenas.lan/Media
+      path: /media
+      opts: "vers=3.0,credentials=/home/johnsturgeon/.smbcredentials,noperm,mfsymlinks,noserverino"
+      fstype: cifs
+      state: mounted
