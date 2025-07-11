@@ -18,7 +18,7 @@
   - name: Install Netbird when it doesn't already exists
     ansible.builtin.shell: |
       curl -fsSL https://pkgs.netbird.io/install.sh | sh
-    # when: netbird.stat.executable is not defined
+    when: netbird.stat.executable is not defined
   - name: Netbird UP
     ansible.builtin.shell: "netbird up --setup-key {{ netbird_setup_key }}"
     when: netbird.stat.executable is not defined
