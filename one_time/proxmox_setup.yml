@@ -1,0 +1,26 @@
+- name: Configure Proxmox Cluster
+  hosts: proxmox
+  become: true
+  vars:
+    file_sd_output_path: /etc/prometheus/file_sd/node_exporter.json
+    monitored_group: prometheus_node_export  # Change this if your inventory group is different
+
+  tasks:
+    - name: Ensure target directory exists
+      file:
+        path: "{{ file_sd_output_path | dirname }}"
+        state: directory
+        mode: '0755'
+
+    - name: Generate node_exporter file_sd config from Ansible inventory
+      template:
+        src: node_exporter.json.j2
+        dest: "{{ file_sd_output_path }}"
+        mode: '0644'
+      notify: Restart Prometheus
+
+  handlers:
+    - name: Restart Prometheus
+      service:
+        name: prometheus
+        state: restarted
