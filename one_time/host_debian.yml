@@ -10,19 +10,6 @@
     args:
       creates: "{{ ansible_env.HOME }}/.iterm2_shell_integration.bash"
 
-  # Install Netbird
-  - name: Check to see if /usr/bin/netbird exists
-    ansible.builtin.stat:
-      path: /usr/bin/netbird
-    register: netbird
-  - name: Install Netbird when it doesn't already exists
-    ansible.builtin.shell: |
-      curl -fsSL https://pkgs.netbird.io/install.sh | sh
-    when: netbird.stat.executable is not defined
-  - name: Netbird UP
-    ansible.builtin.shell: "netbird up --setup-key {{ netbird_setup_key }}"
-    when: netbird.stat.executable is not defined
-   
   - name: Update some basic .profile settings
     ansible.builtin.blockinfile:
       path: "{{ ansible_env.HOME }}/.bashrc"
