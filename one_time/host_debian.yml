@@ -1,7 +1,6 @@
 - name: Debian Server Configuration
   hosts: tags_ansible_debian
   vars:
-    netbird_setup_key: "{{ lookup('env', 'NETBIRD_SETUP_KEY') }}"
     base_path: /root/ansible
 
   tasks:
