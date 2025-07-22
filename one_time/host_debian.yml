@@ -22,9 +22,9 @@
       user: root
       key: "{{ lookup('env', 'JOHNS_IMAC_PUBLIC_KEY') }}"
 
-  - name: Remove "prometheus-node-exporter" package
+  - name: Remove "prometheus-node-exporter-collectors" package
     ansible.builtin.apt:
-      name: remove prometheus-node-exporter
+      name: remove prometheus-node-exporter-collectors
       state: absent
   
   - name: Install useful things
