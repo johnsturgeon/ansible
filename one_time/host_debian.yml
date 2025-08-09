@@ -15,6 +15,7 @@
       block: |
         alias ll='ls -l'
         set -o vi
+        export EDITOR=vi
       marker: '# {mark} ANSIBLE MANAGED BLOCK - aliases'
 
   - name: Add johnsturgeon imac public ssh key
