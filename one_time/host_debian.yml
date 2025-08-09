@@ -20,7 +20,7 @@
   - name: Add johnsturgeon imac public ssh key
     ansible.posix.authorized_key:
       user: root
-      key: "{{ lookup('env', 'JOHNS_IMAC_PUBLIC_KEY') }}"
+      key: "{{ lookup('community.general.onepassword', 'JOHNS_IMAC_PUBLIC_KEY', vault='HomelabSecrets') }}"
 
   - name: Remove "prometheus-node-exporter-*" package
     ansible.builtin.apt:

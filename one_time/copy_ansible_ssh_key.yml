@@ -4,4 +4,4 @@
   - name: Add ansible-root ssh key
     ansible.posix.authorized_key:
       user: root
-      key: "{{ lookup('env', 'ANSIBLE_PUBLIC_KEY') }}"
+      key: "{{ lookup('community.general.onepassword', 'ANSIBLE_PUBLIC_KEY', vault='HomelabSecrets') }}"
