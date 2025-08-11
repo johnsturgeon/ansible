@@ -7,30 +7,26 @@
   - name: Add the user johnsturgeon
     ansible.builtin.user:
       name: johnsturgeon
-    register: user
+    state: user
 
-  - name:  the new user
+  - name: Configure the new user
     ansible.builtin.shell: |
+      useradd -m johnsturgeon
       usermod -aG sudo johnsturgeon
       usermod --shell /bin/bash johnsturgeon
-
-  - name: Add johnsturgeon imac public ssh key
-    ansible.posix.authorized_key:
-      user: johnsturgeon
-      key: "{{ lookup('community.general.onepassword', 'JOHNS_IMAC_PUBLIC_KEY', vault='HomelabSecrets') }}"
-  - name: Add ansible public ssh key
-    ansible.posix.authorized_key:
-      user: johnsturgeon
-      key: "{{ lookup('community.general.onepassword', 'ANSIBLE_PUBLIC_KEY', vault='HomelabSecrets') }}"
+    when:
+      - user.changed
   - name: Install iTerm Shell Integration
     ansible.builtin.script: "{{ base_path }}/files/install_shell_integration.sh"
     remote_user: johnsturgeon
     args:
-      creates: "/home/johnsturgeon/.iterm2_shell_integration.bash"
+      creates: "{{ ansible_env.HOME }}/.iterm2_shell_integration.bash"
+    when:
+      - user.changed
   - name: Update some basic .profile settings
     remote_user: johnsturgeon
     ansible.builtin.blockinfile:
-      path: "/home/johnsturgeon/.bashrc"
+      path: "{{ ansible_env.HOME }}/.bashrc"
       block: |
         alias ll='ls -l'
         set -o vi
@@ -41,6 +37,8 @@
     ansible.builtin.script: "{{ base_path }}/files/install_shell_integration.sh"
     args:
       creates: "{{ ansible_env.HOME }}/.iterm2_shell_integration.bash"
+
+
   - name: Update some basic .profile settings
     ansible.builtin.blockinfile:
       path: "{{ ansible_env.HOME }}/.bashrc"
@@ -49,6 +47,7 @@
         set -o vi
         export EDITOR=vi
       marker: '# {mark} ANSIBLE MANAGED BLOCK - aliases'
+
   - name: Add johnsturgeon imac public ssh key
     ansible.posix.authorized_key:
       user: root
